@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
 from .models.search import Searchable, SearchableSerializer
-from .models.events import Event
+from .models.events import Event, Place, PlaceSerializer
 
 import simplejson
 
@@ -18,3 +18,9 @@ def events_list(request, *args, **kwargs):
         'events_list': events,
     }
     return render(request, 'events/event_list.html', context)
+
+def places_list(request):
+    places = Place.objects.all()
+    serializer = PlaceSerializer(places, many=True)
+    return JsonResponse(serializer.data, safe=False)
+

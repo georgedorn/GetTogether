@@ -1,14 +1,29 @@
 {% extends "get_together/base.html" %}
-
+{% load static %}
 {% block content %}
 <h2>Plan a Get Together</h2>
-<form action="{% url "create-event" team.id%}" method="post">
+<form id="form" action="{% url "create-event" team.id%}" method="post">
 {% csrf_token %}
 <div class="form-group">
 {% include "events/event_form.html" %}
-	<br />
+<v-select url="/api/places/" name="place" options-label="name" options-value="id" clear-button></v-select>
+<br />
 <button type="submit" class="btn btn-primary">Announce your Get Together</button>
 </div>
 </form>
+
 {% endblock %}
 
+{% block page_scripts %}
+<script src="{% static 'js/vue.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-strap/1.1.40/vue-strap.js"></script>
+<script>
+Vue.config.debug = true
+  var app = new Vue({
+    el: '#app',
+    components: {
+	'v-select': VueStrap.select,
+    },
+  })
+</script>
+{% endblock %}
